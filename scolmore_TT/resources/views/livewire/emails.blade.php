@@ -40,7 +40,7 @@
                                     </div>
                                     @elseif (session()->has('error'))
                                     <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                        <strong class="font-bold text-green-700">Error! </strong>
+                                        <strong class="font-bold text-red-700">Error! </strong>
                                         <span class="block sm:inline"> {{ session('error') }}</span>
 
                                     </div>

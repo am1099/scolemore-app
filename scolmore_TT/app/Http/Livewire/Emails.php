@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\EmailMessages;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
+use App\Jobs\SendingEmails;
+
 
 class Emails extends Component
 {
@@ -18,7 +20,7 @@ class Emails extends Component
     public $subject;
     public $message;
     public $index = 1;
-    
+
 
 
     public function render()
@@ -50,10 +52,14 @@ class Emails extends Component
 
         // sending the email via mailgun, tested for only specific users due to restriction by mailgun
         try {
-            Mail::send('emails.emailTemplate', ['name' => Auth::user()->name, 'msg' => $this->message], function ($message) {
-                $message->to($this->message_to);
-                $message->subject($this->subject);
-            });
+            // Mail::send('emails.emailTemplate', ['name' => Auth::user()->name, 'msg' => $this->message], function ($message) {
+            //     $message->to($this->message_to);
+            //     $message->subject($this->subject);
+            // });
+
+            SendingEmails::dispatch($this->message, $this->message_to, $this->subject);
+
+            var_dump('Dispatched email ' . $this->subject);
 
 
 
@@ -80,8 +86,5 @@ class Emails extends Component
 
     public function emailTracking()
     {
-        
     }
-
-    
 }
