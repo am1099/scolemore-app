@@ -69,7 +69,13 @@
                                                 @endforeach
                                             </select> -->
                                             <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label>
-                                            <input wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" :value="old('message_to')" />
+                                            <input wire:model="message_to" list="emails" placeholder="Recipient email" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" :value="old('message_to')" />
+                                            <datalist id="emails">
+                                                @foreach($users as $user)
+                                                <option value={{ $user->email }}>
+                                                @endforeach
+                                            </datalist>
+
 
                                             @error('message_to')
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -106,14 +112,14 @@
 
 
                                         <div class="flex items-center justify-end mt-4 mb-4">
-                                            
+
                                             <x-jet-button type="reset" style="background-color: #d1a319" class="ml-4 ">
                                                 {{ __('Reset') }}
                                             </x-jet-button>
                                             <x-jet-button style="background-color: green" wire:click.prevent="sendEmail()" class="ml-4 ">
                                                 {{ __('Send') }}
                                             </x-jet-button>
-                                            
+
                                         </div>
                                     </form>
 
