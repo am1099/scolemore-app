@@ -34,7 +34,6 @@ class SendingEmails implements ShouldQueue
         $this->msg = $msg;
         $this->msg_to = $msg_to;
         $this->subject = $subject;
-
     }
 
     /**
@@ -44,12 +43,12 @@ class SendingEmails implements ShouldQueue
      */
     public function handle()
     {
+
         Mail::send('emails.emailTemplate', ['name' => Auth::user()->name, 'msg' => $this->msg], function ($message) {
             $message->to($this->msg_to);
             $message->subject($this->subject);
         });
 
-        FacadesLog::info('Emailed order ');
-
+      FacadesLog::info('Email sent ');
     }
 }

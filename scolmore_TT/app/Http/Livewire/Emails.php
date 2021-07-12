@@ -51,17 +51,11 @@ class Emails extends Component
         ]);
 
         // sending the email via mailgun, tested for only specific users due to restriction by mailgun
+        // using the SendingEmails Job to send the requested email then storing the message in the database if succesaful
+        // otherwise and exception error message will be thrown
         try {
-            // Mail::send('emails.emailTemplate', ['name' => Auth::user()->name, 'msg' => $this->message], function ($message) {
-            //     $message->to($this->message_to);
-            //     $message->subject($this->subject);
-            // });
-
+            
             SendingEmails::dispatch($this->message, $this->message_to, $this->subject);
-
-            var_dump('Dispatched email ' . $this->subject);
-
-
 
             // Store the message in the database after the message is sent
             $message = new EmailMessages;
@@ -72,14 +66,13 @@ class Emails extends Component
             $message->status = 'sent';
             $message->save();
 
-            // Refresh the page with the correct message
+            // Send message to user saying it has been successful and refresh the page
             session()->flash('success', 'your message was sent!');
             return redirect()->to('/sendEmail');
             // return redirect()->route('emails');
-
-
+            
         } catch (\Exception $e) {
-            // dd("failed: " . $e);
+            // Send message to user saying it has been unsuccessful
             session()->flash('error', 'your message was not sent!');
         }
     }
