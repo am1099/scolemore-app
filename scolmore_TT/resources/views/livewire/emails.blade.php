@@ -62,7 +62,13 @@
 
                                         <div class="grid grid-cols-1 mt-4 mb-4 mx-7">
                                             <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label>
-                                            <input wire:model="message_to" type="email" name="message_to" :value="old('message_to')" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="text" placeholder="Recipient" />
+                                            <select name="email" wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                                                <option value=''>Choose an email</option>
+                                                @foreach($users as $user)
+                                                <option value={{ $user->email }}> {{ $loop->index + 1 }} - {{ $user->email }}</option>
+                                                @endforeach
+                                            </select>
+
                                             @error('message_to')
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
                                                 <strong class="font-bold text-red-700">ERROR! </strong>
