@@ -22,7 +22,9 @@ class Emails extends Component
 
     public function render()
     {
-        $emails = EmailMessages::all();
+        // $emails = EmailMessages::all()->sortBy('created_at', 'asc');
+        $emails = EmailMessages::orderBy('created_at', 'desc')->get();
+
         return view('livewire.emails', compact('emails'));
     }
 
