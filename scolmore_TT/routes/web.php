@@ -23,3 +23,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/sendEmail', App\Http\Livewire\Emails::class)->name('emails');
 
+Route::post('webhook', 'WebhookController@handle');
+
+

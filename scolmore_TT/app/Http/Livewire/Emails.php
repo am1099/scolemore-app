@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\EmailMessages;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Request;
 
 class Emails extends Component
 {
@@ -24,7 +24,7 @@ class Emails extends Component
     public function render()
     {
         // $emails = EmailMessages::all()->sortBy('created_at', 'asc');
-        $emails = EmailMessages::orderBy('created_at', 'desc')->get();
+        $emails = EmailMessages::where('message_from', Auth::user()->email)->orderBy('created_at', 'desc')->get();
         $users = User::all();
 
 
@@ -63,7 +63,7 @@ class Emails extends Component
             $message->message_to = $this->message_to;
             $message->subject = $this->subject;
             $message->message = $this->message;
-            $message->status = 'N/A';
+            $message->status = 'sent';
             $message->save();
 
             // Refresh the page with the correct message
@@ -78,7 +78,10 @@ class Emails extends Component
         }
     }
 
-    public function viewEmailsSent()
+    public function emailTracking()
     {
+        
     }
+
+    
 }

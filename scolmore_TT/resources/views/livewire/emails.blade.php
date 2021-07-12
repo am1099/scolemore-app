@@ -61,13 +61,15 @@
                                         </div> -->
 
                                         <div class="grid grid-cols-1 mt-4 mb-4 mx-7">
-                                            <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label>
-                                            <select name="email" wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
+                                            <!-- <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label> -->
+                                            <!-- <select name="email" wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
                                                 <option value=''>Choose an email</option>
                                                 @foreach($users as $user)
                                                 <option value={{ $user->email }}> {{ $loop->index + 1 }} - {{ $user->email }}</option>
                                                 @endforeach
-                                            </select>
+                                            </select> -->
+                                            <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label>
+                                            <input wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" :value="old('message_to')" />
 
                                             @error('message_to')
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -104,9 +106,14 @@
 
 
                                         <div class="flex items-center justify-end mt-4 mb-4">
-                                            <x-jet-button wire:click.prevent="sendEmail()" class="ml-4 ">
+                                            
+                                            <x-jet-button type="reset" style="background-color: #d1a319" class="ml-4 ">
+                                                {{ __('Reset') }}
+                                            </x-jet-button>
+                                            <x-jet-button style="background-color: green" wire:click.prevent="sendEmail()" class="ml-4 ">
                                                 {{ __('Send') }}
                                             </x-jet-button>
+                                            
                                         </div>
                                     </form>
 
@@ -168,9 +175,20 @@
                                                     {{ $message->created_at }}
                                                 </td>
                                                 <td class="px-6 py-4  whitespace-nowrap  text-sm font-medium">
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Active
+                                                    @if ($message->status == 'sent')
+                                                    <span style="background-color: 	#d1a319;" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                        Sent
                                                     </span>
+                                                    @elseif ($message->status == 'delivered')
+                                                    <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                        Delivered
+                                                    </span>
+                                                    @elseif ($message->status == 'opened')
+                                                    <span style="background-color: 	#4B0082;" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-Indigo-100 text-Indigo-800">
+                                                        Opened
+                                                    </span>
+                                                    @endif
+
                                                 </td>
                                             </tr>
 
