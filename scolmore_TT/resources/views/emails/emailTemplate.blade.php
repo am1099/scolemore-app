@@ -10,7 +10,6 @@
     <p style="font-size: 18px">message: {{ $msg }}</p>
 
     <p>Kind Regards,</p>
-    <p>{{ $name }}</p>
 </body>
 
 </html>

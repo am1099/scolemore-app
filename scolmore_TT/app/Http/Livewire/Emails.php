@@ -54,6 +54,7 @@ class Emails extends Component
         // using the SendingEmails Job to send the requested email then storing the message in the database if succesaful
         // otherwise and exception error message will be thrown
         try {
+
             
             SendingEmails::dispatch($this->message, $this->message_to, $this->subject);
 
@@ -72,6 +73,7 @@ class Emails extends Component
             // return redirect()->route('emails');
             
         } catch (\Exception $e) {
+            dd($e);
             // Send message to user saying it has been unsuccessful
             session()->flash('error', 'your message was not sent!');
         }

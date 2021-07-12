@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log as FacadesLog;
-use Log;
+use Illuminate\Support\Facades\Redis;
 
 class SendingEmails implements ShouldQueue
 {
@@ -44,11 +44,18 @@ class SendingEmails implements ShouldQueue
     public function handle()
     {
 
-        Mail::send('emails.emailTemplate', ['name' => Auth::user()->name, 'msg' => $this->msg], function ($message) {
-            $message->to($this->msg_to);
-            $message->subject($this->subject);
+        // Allow only 1 email every 15 second per user
+        Redis::throttle('SendEmailByScolemore')->allow(1)->every(15)->then(function () {
+            // Sends email using the emailTemplate passing 3 variables to the template msg, msg_to and subject
+            Mail::send('emails.emailTemplate', ['msg' => $this->msg], function ($message) {
+                $message->to($this->msg_to);
+                $message->subject($this->subject);
+            });
+        }, function () {
+            // Could not obtain lock; this job will be re-queued
+            return $this->release(2);
         });
 
-      FacadesLog::info('Email sent ');
+        FacadesLog::info('Email sent ');
     }
 }
