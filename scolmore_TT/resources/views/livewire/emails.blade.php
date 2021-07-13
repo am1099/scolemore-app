@@ -182,7 +182,7 @@
                                                 </td>
                                                 <td class="px-6 py-4  whitespace-nowrap  text-sm font-medium">
                                                     @if ($message->status == 'sent')
-                                                    <span style="background-color: 	#d1a319;" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                    <span style="background-color: 	#d1a319; color: white" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                         Sent
                                                     </span>
                                                     @elseif ($message->status == 'delivered')

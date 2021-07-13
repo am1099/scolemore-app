@@ -14,21 +14,19 @@ use App\Jobs\SendingEmails;
 class Emails extends Component
 {
 
-
     public $message_from;
     public $message_to;
     public $subject;
     public $message;
     public $index = 1;
-
+    public $jobStatus = false;
 
 
     public function render()
     {
-        // $emails = EmailMessages::all()->sortBy('created_at', 'asc');
+        // Fetching all emails that were sent by the system by username and in descending order so latest emails appear first
         $emails = EmailMessages::where('message_from', Auth::user()->email)->orderBy('created_at', 'desc')->get();
         $users = User::all();
-
 
         return view('livewire.emails', compact('emails', 'users'));
     }
@@ -54,32 +52,33 @@ class Emails extends Component
         // using the SendingEmails Job to send the requested email then storing the message in the database if succesaful
         // otherwise and exception error message will be thrown
         try {
-
-            
             SendingEmails::dispatch($this->message, $this->message_to, $this->subject);
-
-            // Store the message in the database after the message is sent
-            $message = new EmailMessages;
-            $message->message_from = Auth::user()->email;
-            $message->message_to = $this->message_to;
-            $message->subject = $this->subject;
-            $message->message = $this->message;
-            $message->status = 'sent';
-            $message->save();
-
-            // Send message to user saying it has been successful and refresh the page
-            session()->flash('success', 'your message was sent!');
-            return redirect()->to('/sendEmail');
-            // return redirect()->route('emails');
-            
+            $this->jobStatus = true;
         } catch (\Exception $e) {
-            dd($e);
+
             // Send message to user saying it has been unsuccessful
             session()->flash('error', 'your message was not sent!');
         }
+
+        // makes sure email is stored in the database after job is dispatched
+        if ($this->jobStatus == true) {
+            $this->storeEmail();
+        }
     }
 
-    public function emailTracking()
+    public function storeEmail()
     {
+        // Store the message in the database after the message is sent
+        $message = new EmailMessages;
+        $message->message_from = Auth::user()->email;
+        $message->message_to = $this->message_to;
+        $message->subject = $this->subject;
+        $message->message = $this->message;
+        $message->status = 'sent';
+        $message->save();
+
+        // Send message to user saying it has been successful and refresh the page
+        session()->flash('success', 'your message was sent!');
+        return redirect()->to('/sendEmail');
     }
 }
