@@ -20,6 +20,7 @@ class Emails extends Component
     public $message;
     public $index = 1;
     public $jobStatus = false;
+    public $deleteId = '';
 
 
     public function render()
@@ -79,6 +80,18 @@ class Emails extends Component
 
         // Send message to user saying it has been successful and refresh the page
         session()->flash('success', 'your message was sent!');
+        return redirect()->to('/sendEmail');
+    }
+
+
+
+    public function deleteEmail($id)
+    {
+        $email = EmailMessages::where('message_id', $id);
+        $email->delete();
+
+        // Send message to user saying it has been successful and refresh the page
+        session()->flash('success', 'Selected message was deleted!');
         return redirect()->to('/sendEmail');
     }
 }
