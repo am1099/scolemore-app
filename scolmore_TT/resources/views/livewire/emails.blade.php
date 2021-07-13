@@ -1,12 +1,12 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Email Messages Form/View') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-full mx-auto sm:px-6 lg:px-8" style="width: 75%;">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
 
@@ -54,34 +54,19 @@
 
                                     <form style="width: 70%;" method="POST" action="{{ route('emails') }}">
                                         @csrf
-
-                                        <!-- <div class="grid grid-cols-1 mt-4 mb-4 mx-7">
-                                            <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">From</label>
-                                            <input wire:model="message_from" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" value="{{Auth::user()->name}}" />
-                                        </div> -->
-
                                         <div class="grid grid-cols-1 mt-4 mb-4 mx-7">
-                                            <!-- <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label> -->
-                                            <!-- <select name="email" wire:model="message_to" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent">
-                                                <option value=''>Choose an email</option>
-                                                @foreach($users as $user)
-                                                <option value={{ $user->email }}> {{ $loop->index + 1 }} - {{ $user->email }}</option>
-                                                @endforeach
-                                            </select> -->
                                             <label class="uppercase md:text-sm text-md text-gray-500 text-light font-semibold">Recipient</label>
                                             <input wire:model="message_to" list="emails" placeholder="Recipient email" class="py-2 px-3 rounded-lg border-2 border-blue-300 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" :value="old('message_to')" />
                                             <datalist id="emails">
                                                 @foreach($users as $user)
                                                 <option value={{ $user->email }}>
-                                                @endforeach
+                                                    @endforeach
                                             </datalist>
-
 
                                             @error('message_to')
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
                                                 <strong class="font-bold text-red-700">ERROR! </strong>
                                                 <span class="block sm:inline"> {{ $message }}</span>
-
                                             </div>
                                             @enderror
                                         </div>
@@ -93,7 +78,6 @@
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
                                                 <strong class="font-bold text-red-700">ERROR!</strong>
                                                 <span class="block sm:inline">{{ $message }}</span>
-
                                             </div>
                                             @enderror
                                         </div>
@@ -105,33 +89,25 @@
                                             <div class="bg-red-100 border border-red-900 text-red-700 px-4 py-3 rounded relative" role="alert">
                                                 <strong class="font-bold text-red-700">ERROR!</strong>
                                                 <span class="block sm:inline">{{ $message }}</span>
-
                                             </div>
                                             @enderror
                                         </div>
 
-
                                         <div class="flex items-center justify-end mt-4 mb-4">
-
                                             <x-jet-button type="reset" style="background-color: #d1a319" class="ml-4 ">
                                                 {{ __('Reset') }}
                                             </x-jet-button>
                                             <x-jet-button style="background-color: green" wire:click.prevent="sendEmail()" class="ml-4 ">
                                                 {{ __('Send') }}
                                             </x-jet-button>
-
                                         </div>
                                     </form>
-
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
-
-
+                    <!-- Table displaying all sent messages from the user -->
                     <div class="flex flex-col" id="viewMessage-tab">
                         <div class="-my-2 overflow-x-auto sm:-mx-12 lg:-mx-8">
                             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -157,9 +133,7 @@
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Status
                                                 </th>
-                                                <!-- <th scope="col" class="relative px-6 py-3">
-                                                <span class="sr-only">Edit</span>
-                                            </th> -->
+
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
@@ -194,29 +168,19 @@
                                                         Opened
                                                     </span>
                                                     @endif
-
                                                 </td>
                                             </tr>
-
-
                                             @endforeach
-
-                                            <!-- More people... -->
                                         </tbody>
                                     </table>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
-
 
     <style>
         .active {
@@ -226,12 +190,14 @@
         }
     </style>
 
+    <!-- Script to highlight the tab that is seleceted above -->
     <script>
         let tabsContainer = document.querySelector("#tabs");
 
         let tabTogglers = tabsContainer.querySelectorAll("a");
         console.log(tabTogglers);
 
+        // use of foreach to loop through each available tab
         tabTogglers.forEach(function(toggler) {
             toggler.addEventListener("click", function(e) {
                 e.preventDefault();
@@ -240,19 +206,16 @@
 
                 let tabContents = document.querySelector("#tab-contents");
 
+                // if tab not selected then remove styling
                 for (let i = 0; i < tabContents.children.length; i++) {
-
-                    tabTogglers[i].parentElement.classList.remove("active", "border-b", "-mb-px", "opacity-100");
+                    tabTogglers[i].parentElement.classList.remove("active");
                     tabContents.children[i].classList.remove("hidden");
                     if ("#" + tabContents.children[i].id === tabName) {
                         continue;
                     }
                     tabContents.children[i].classList.add("hidden");
-
-
                 }
-                e.target.parentElement.classList.add("active", "border-b-4", "-mb-px", "opacity-100");
-
+                e.target.parentElement.classList.add("active");
             });
         });
 
