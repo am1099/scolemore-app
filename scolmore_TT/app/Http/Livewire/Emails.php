@@ -20,8 +20,6 @@ class Emails extends Component
     public $message;
     public $index = 1;
     public $jobStatus = false;
-    public $deleteId = '';
-
 
     public function render()
     {
@@ -32,7 +30,7 @@ class Emails extends Component
         return view('livewire.emails', compact('emails', 'users'));
     }
 
-
+    // funtion to send an email using mailgun via a job
     public function sendEmail()
     {
         // Validation for the 'send email' form to make sure all fields are validated with the correct info
@@ -67,6 +65,7 @@ class Emails extends Component
         }
     }
 
+    // Funtion that stores the email being sent
     public function storeEmail()
     {
         // Store the message in the database after the message is sent
@@ -84,7 +83,7 @@ class Emails extends Component
     }
 
 
-
+    // This funtion deleted a specific message by id
     public function deleteEmail($id)
     {
         $email = EmailMessages::where('message_id', $id);

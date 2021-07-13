@@ -28,6 +28,7 @@ class SendingEmails implements ShouldQueue
      */
     public function __construct($msg, $msg_to, $subject)
     {
+        // All information regarding the message/email being sent
         $this->msg = $msg;
         $this->msg_to = $msg_to;
         $this->subject = $subject;

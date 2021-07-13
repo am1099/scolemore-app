@@ -13,14 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Route that came iwth livewire
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// This route will renders the email blade page that is linked ot Emails livewire component
 Route::middleware(['auth:sanctum', 'verified'])->get('/sendEmail', App\Http\Livewire\Emails::class)->name('emails');
 
 Route::post('webhook', 'WebhookController@handle');
