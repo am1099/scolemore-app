@@ -23,3 +23,5 @@ Step 8: Call the database scolemoreDB then click on 'create'
 Step 9: cd onto my project folder and run this command in terminal 'php artisan migrate' (to create the migration and create all the tables), then run 'php artisan serve' and 'npm run dev' to run the website. (link should come up, just add '/login' in front of it).
 
 Step 10: Redis would need to be installed so that Jobs can be sent when sending an email with rate limit applied. Use this link to help with installing Redis for Windows: https://riptutorial.com/redis/example/29962/installing-and-running-redis-server-on-windows
+
+NOTE: Mailgun only allows up to 5 Authorized recipients of which I have authorized two of my own. If you would like me to Authorize your email for testing purposes please contact me! 
