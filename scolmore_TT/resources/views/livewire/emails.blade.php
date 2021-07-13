@@ -168,7 +168,7 @@
                                                         <span style="background-color: 	#4B0082;" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-Indigo-100 text-Indigo-800">
                                                             Opened
                                                         </span>
-                                                        @endif
+                                                        
                                                         @elseif ($message->status == 'failed')
                                                         <span style="background-color: 	red; color: white" class="px-2 inline-flex text-sm text-white leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                             Opened
